@@ -40,16 +40,21 @@ def test_linked_text(driver):
     assert driver.find_element(By.TAG_NAME, 'h1').text == 'Contact us'
     
 #if there is no name or ID and other ways can't work too
-def test_css_seleceot(driver):
+def test_css_selector(driver):
     driver.get("https://www.qa-practice.com/elements/input/simple")
     #to search by selector in the devtools -> html select the code of the element and click ctrl + F and search in [] 
     #text_string = driver.find_element(By.CSS_SELECTOR, '[placeholder = "Submit me"]')
     #put the . in front
     text_string = driver.find_element(By.CSS_SELECTOR, '.form-control')
     text_string.send_keys('input_data')
+    #text_string.send_keys(Keys.ENTER)
+    print(text_string.value_of_css_property('border-color'))
+    assert text_string.get_attribute('placeholder') == 'Submit me'
+    
+
+def test_xpath(driver):
+    driver.get("https://www.qa-practice.com/elements/input/simple")
+    text_string = driver.find_element(By.XPATH, '//*[@placeholder="Submit me"]')
+    text_string.send_keys('crop')
     text_string.send_keys(Keys.ENTER)
 
-
-    
-    
-    
