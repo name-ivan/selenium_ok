@@ -1,6 +1,5 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -58,3 +57,10 @@ def test_xpath(driver):
     text_string.send_keys('crop')
     text_string.send_keys(Keys.ENTER)
 
+def test_clear(driver):
+    input_data = "cat"
+    driver.get("https://www.qa-practice.com/elements/input/simple")
+    text_string = driver.find_element(By.CLASS_NAME, "form-control")
+    text_string.send_keys(input_data)
+    sleep(2)
+    text_string.clear()
