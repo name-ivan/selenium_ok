@@ -13,6 +13,3 @@ def driver():
     sleep(3)
 
 
-test
-
-
