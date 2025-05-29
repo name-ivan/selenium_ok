@@ -63,4 +63,24 @@ def test_clear(driver):
     text_string = driver.find_element(By.CLASS_NAME, "form-control")
     text_string.send_keys(input_data)
     sleep(2)
-    text_string.clear()
+    a = text_string.get_attribute('value')
+    #text_string.clear()
+    #if clear doesn't work what to do
+    for _ in range(len(a)):
+        text_string.send_keys(Keys.BACKSPACE)
+    assert text_string.is_displayed()
+    
+def test_button_enabled_select(driver):
+    driver.get("https://www.qa-practice.com/elements/button/disabled")
+    button = driver.find_element(By.ID, "submit-id-submit")
+    print(button.is_enabled)
+    driver.find_element(By.XPATH, "//*[@id="id_select_state"]")
+    print(button.is_enabled)
+    
+    
+    
+    
+    
+    #assert button.is_enabled() == False
+
+
