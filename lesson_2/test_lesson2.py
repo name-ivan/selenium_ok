@@ -6,18 +6,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 
 
 @pytest.fixture()
 def driver():
     chrome_driver = webdriver.Chrome()
-    # chrome_driver.implicitly_wait(10)
-    # sleep(3)
+    chrome_driver.implicitly_wait(10)
     chrome_driver.maximize_window()
     yield chrome_driver
-    #sleep(3)
+
 
 def test_id_name(driver):
     input_data = "cat"
@@ -141,7 +139,6 @@ def test_same_cards(driver):
     for card in product_cards:
         print(card.find_element(By.CLASS_NAME, 'price').text)
     # print(product_cards[0].find_element(By.CLASS_NAME, 'price').text)
-    
     
     
     
