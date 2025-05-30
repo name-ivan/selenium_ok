@@ -4,16 +4,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 
 
 @pytest.fixture()
 def driver():
     chrome_driver = webdriver.Chrome()
-    sleep(3)
+    # chrome_driver.implicitly_wait(10)
+    # sleep(3)
     chrome_driver.maximize_window()
     yield chrome_driver
-    sleep(3)
+    #sleep(3)
 
 def test_id_name(driver):
     input_data = "cat"
@@ -73,14 +77,85 @@ def test_clear(driver):
 def test_button_enabled_select(driver):
     driver.get("https://www.qa-practice.com/elements/button/disabled")
     button = driver.find_element(By.ID, "submit-id-submit")
-    print(button.is_enabled)
-    driver.find_element(By.XPATH, "//*[@id="id_select_state"]")
-    print(button.is_enabled)
+    print(button.is_enabled())
+    select = driver.find_element(By.XPATH, '//*[@id="id_select_state"]')
+    dropdown = Select(select)
+    dropdown.select_by_value("enabled")
+    print(button.is_enabled())
     
     
-    
-    
-    
-    #assert button.is_enabled() == False
+def test_visible_after(driver):
+    driver.get("https://demoqa.com/dynamic-properties")
+    button3 = driver.find_element(By.CSS_SELECTOR, 'visibleAfter')
+    button3.click()
+    # assert button3.is_displayed(), "the button is not displayed"
+ 
 
+
+def test_cart_added_sign(driver):
+    driver.get("https://magento.softwaretestingboard.com/olivia-1-4-zip-light-jacket.html")
+    sizeS = driver.find_element(By.ID, 'option-label-size-143-item-167')
+    sizeS.click()
+    color_black = driver.find_element(By.ID, 'option-label-color-93-item-49')
+    color_black.click()
+    add_to_cart_btn = driver.find_element(By.ID, "product-addtocart-button")
+    add_to_cart_btn.click()
+    wait = WebDriverWait(driver, 5)
+    wait.until_not(
+        EC.text_to_be_present_in_element_attribute(
+            locator=(By.CSS_SELECTOR, ".counter.qty"),
+            attribute_='class',
+            text_='empty')
+        )
+    wait.until_not(
+        EC.text_to_be_present_in_element_attribute(
+            locator=(By.CSS_SELECTOR, ".counter.qty"),
+            attribute_='class',
+            text_='loading')
+        )
+    counter = driver.find_element(By.CSS_SELECTOR, '.counter-number')
+    print(f"counter number is {counter.text}")
+    # cart_sign = driver.find_element()
+    
+    
+def test_visible_after1(driver):
+    driver.get("https://demoqa.com/dynamic-properties")
+    wait = WebDriverWait(driver, 8)
+    wait.until(EC.presence_of_element_located((By.ID, 'visibleAfter')))
+    button3 = driver.find_element(By.ID, 'visibleAfter')
+    button3.click()
+    driver.add_cookie({'name':'test_name', 'value': 'test_value'})
+    # print(driver.get_cookies())
+    print(driver.get_cookie('test_name'))
+    
+    
+def test_same_elements(driver):
+    driver.get('https://magento.softwaretestingboard.com/men/bottoms-men/pants-men.html')
+    product_link = driver.find_elements(By.CLASS_NAME, 'product-item-link')
+    print(product_link[0].text)
+    print(product_link[-1].text)
+    
+def test_same_cards(driver):
+    driver.get('https://magento.softwaretestingboard.com/men/bottoms-men/pants-men.html')
+    product_cards = driver.find_elements(By.CLASS_NAME, 'product-item-info')
+    for card in product_cards:
+        print(card.find_element(By.CLASS_NAME, 'price').text)
+    # print(product_cards[0].find_element(By.CLASS_NAME, 'price').text)
+    
+    
+    
+    
+    
+    
+     #Different waits
+ #implicitly wait
+ # chrome_driver.implicitly_wait(5)
+
+# wait = WebDriverWait(driver, 5)
+# wait.until_not(
+#     EC.text_to_be_present_in_element_attribute(
+#         locator=(By.CSS_SELECTOR, ".counter.qty"),
+#         attribute_='class',
+#         text_='empty')
+#     )
 
