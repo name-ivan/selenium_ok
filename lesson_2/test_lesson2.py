@@ -153,6 +153,19 @@ def test_tab(driver):
     driver.close()
     driver.switch_to.window(tabs[0])
 
+def test_stale_exception(driver):
+    driver.get('https://www.qa-practice.com/elements/checkboz/single_checkbox')
+    checkbox = driver.find_element(By.ID, 'id_checkbox_0')
+    print(checkbox.id)
+    checkbox.click()
+    submit = driver.find_element(By.ID, "submit-id-submit")
+    print(submit.id)
+    submit.click()
+    assert driver.find_element(By.ID, 'result-text').text == "select me or not"
+    #these 2 below won't work because selenium doesn't keep the elements in its memory anymore after the page was updated when we clickde submit the first time
+    checkbox.click()
+    submit.click()
+
     
     
     

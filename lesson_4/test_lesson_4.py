@@ -26,12 +26,21 @@ def test_tab(driver):
     driver.switch_to.window(tabs[1])
     # WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'result-text')))
     # driver.get('https://www.qa-practice.com/elements/new_tab/new_page')
-    result_text = driver.find_element(By.CSS_SELECTOR, '.result-text')
+    result_text = driver.find_element(By.ID, 'result-text')
     assert result_text.text == 'I am a new page in a new tab'
     driver.close()
     driver.switch_to.window(tabs[0])
 
-
-
-
+def test_stale_exception(driver):
+    driver.get('https://www.qa-practice.com/elements/checkboz/single_checkbox')
+    checkbox = driver.find_element(By.ID, 'id_checkbox_0')
+    print(checkbox.id)
+    checkbox.click()
+    submit = driver.find_element(By.ID, "submit-id-submit")
+    print(submit.id)
+    submit.click()
+    assert driver.find_element(By.ID, 'result-text').text == "select me or not"
+    #these 2 below won't work because selenium doesn't keep the elements in its memory anymore after the page was updated when we clickde submit the first time
+    checkbox.click()
+    submit.click()
 
