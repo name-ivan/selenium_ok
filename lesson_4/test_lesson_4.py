@@ -30,7 +30,19 @@ def test_tab(driver):
     assert result_text.text == 'I am a new page in a new tab'
     driver.close()
     driver.switch_to.window(tabs[0])
-
+    
+def test_iframe(driver):
+    driver.get('https://www.qa-practice.com/elements/iframe/iframe_page')
+    iframe = driver.find_element(By.TAG_NAME, 'iframe')
+    driver.switch_to.frame(iframe)
+    burger_menu = driver.find_element(By.CLASS_NAME, 'navbar-toggler-icon')
+    burger_menu.click()
+    sleep(2)
+    driver.switch_to.default_content()
+    driver.find_element(By.LINK_TEXT, 'Iframe')
+    sleep(2)
+    
+    
 def test_stale_exception(driver):
     driver.get('https://www.qa-practice.com/elements/checkboz/single_checkbox')
     checkbox = driver.find_element(By.ID, 'id_checkbox_0')
@@ -41,6 +53,8 @@ def test_stale_exception(driver):
     submit.click()
     assert driver.find_element(By.ID, 'result-text').text == "select me or not"
     #these 2 below won't work because selenium doesn't keep the elements in its memory anymore after the page was updated when we clickde submit the first time
+    checkbox = driver.find_element(By.ID, 'id_checkbox_0')
     checkbox.click()
+    submit = driver.find_element(By.ID, "submit-id-submit")
     submit.click()
 
